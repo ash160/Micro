@@ -8,6 +8,7 @@ public class UserDTO {
     private String lastName;
     private String email;
     private Long departmentId;
+    private DepartmentDTO departments;
 
     public Long getUserId() {
         return userId;
@@ -49,28 +50,24 @@ public class UserDTO {
         this.departmentId = departmentId;
     }
 
-    public UserDTO(Long userId, String firstName, String lastName, String email, Long departmentId) {
+    public DepartmentDTO getDepartments() {
+        return departments;
+    }
+
+    public void setDepartments(DepartmentDTO departments) {
+        this.departments = departments;
+    }
+
+    public UserDTO(Long userId, String firstName, String lastName, String email, Long departmentId, DepartmentDTO departments) {
         this.userId = userId;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.departmentId = departmentId;
+        this.departments = departments;
     }
 
     public UserDTO() {
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        UserDTO userDTO = (UserDTO) o;
-        return Objects.equals(userId, userDTO.userId) && Objects.equals(firstName, userDTO.firstName) && Objects.equals(lastName, userDTO.lastName) && Objects.equals(email, userDTO.email) && Objects.equals(departmentId, userDTO.departmentId);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(userId, firstName, lastName, email, departmentId);
     }
 
     @Override
@@ -81,6 +78,8 @@ public class UserDTO {
                 ", lastName='" + lastName + '\'' +
                 ", email='" + email + '\'' +
                 ", departmentId=" + departmentId +
+                ", departments=" + departments +
                 '}';
     }
+
 }

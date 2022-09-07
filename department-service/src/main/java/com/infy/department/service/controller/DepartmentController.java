@@ -1,31 +1,37 @@
 package com.infy.department.service.controller;
 
+import com.infy.department.service.dto.DepartmentDTO;
+
 import com.infy.department.service.entity.Department;
 import com.infy.department.service.service.DepartmentService;
-import lombok.extern.slf4j.Slf4j;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+
 @RestController
 @RequestMapping("/departments")
-@Slf4j
 public class DepartmentController {
+	
+	Log logger = LogFactory.getLog(DepartmentController.class);
 
     @Autowired
     private DepartmentService departmentService;
 
     @PostMapping("/")
     public Department saveDepartment(@RequestBody Department department){
-        log.info("Inside saveDepartment method of DepartmentController");
+    	 logger.info("Inside saveDepartment method of Department Controller");
         return departmentService.saveDepartment(department);
     }
 
     @GetMapping("/{id}")
-    public Department findDepartmentById(@PathVariable("id") Long departmentId){
-        log.info("Inside findDepartmentById method of DepartmentController");
-
+    public DepartmentDTO findDepartmentById(@PathVariable("id") Long departmentId){
+    	 logger.info("Inside findDepartmentById method of Department Controller");
         return departmentService.findDepartmentById(departmentId);
     }
+
 
 
 

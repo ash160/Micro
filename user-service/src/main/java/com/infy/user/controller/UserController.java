@@ -1,65 +1,55 @@
 package com.infy.user.controller;
-
-import com.infy.user.dto.DepartmentDTO;
 import com.infy.user.dto.UserDTO;
+
 import com.infy.user.entity.User;
 import com.infy.user.service.UserService;
-import lombok.extern.slf4j.Slf4j;
+
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.RestTemplate;
+
 
 @RestController
 @RequestMapping("/users")
-@Slf4j
 public class UserController {
 
+	Log logger = LogFactory.getLog(UserController.class);
+	
     @Autowired
     private UserService userService;
 
-    @Autowired
-    private RestTemplate restTemplate;
 
     @PostMapping("/")
    public User saveUser(@RequestBody User user){
-        log.info("Inside saveUser method of UserController");
+    	 logger.info("Inside saveUser method of User Controller");
        return userService.saveUser(user);
    }
 
    @GetMapping("/{id}")
     public User fetchUserById(@PathVariable ("id") Long userId){
-       log.info("Inside  fetchUserById method of UserController");
-
+	   logger.info("Inside fetchUserById method of User Controller");
        return userService.fetchByUserId(userId);
    }
 
+   @CircuitBreaker(name="userService",fallbackMethod="fetchAllUserDetailsFallback")
+   @GetMapping("/fetchdetails/{id}")
+    public UserDTO fetchAllUserDetails(@PathVariable ("id") Long userId){
+	   logger.info("Inside fetchAllUserDetails method of User Controller");
+        return userService.fetchAllUserDetails(userId);
 
-    //    RestTemplate restTemplate = new RestTemplate();
-//    String fooResourceUrl
-//            = "http://localhost:8080/spring-rest/foos";
-//    ResponseEntity<String> response
-//            = restTemplate.getForEntity(fooResourceUrl + "/1", String.class);
-//Assertions.assertEquals(response.getStatusCode(), HttpStatus.OK);
-//
+   }
+   
+   
+   public UserDTO fetchAllUserDetailsFallback(Long userId,Throwable throwable) {
+	   logger.info("========================fetchAllUserDetails Fallback==============================");
+	   return new UserDTO();
+   }
 
-
-
-
-    @GetMapping("/fetching/{id}")
-    public UserDTO fetchUserDetailsById(@PathVariable ("id") Long userId){
-        UserDTO userDTO=userService.getUserProfile(userId);
-
-        System.out.println(userDTO);
-
-        return UserDTO;
-
-
-
-    }
-
-
+   
+   
 
 
 
