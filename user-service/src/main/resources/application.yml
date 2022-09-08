@@ -34,3 +34,18 @@ resilience4j.circuitbreaker:
             ringBufferSizeInHalfOpenState: 3 
             waitDurationInOpenState: 30s 
             automaticTransitionFromOpenToHalfOpenEnabled: true 
+            
+management:
+    endpoint:
+        metrics:
+            enabled: true
+        prometheus:
+            enabled: true
+    endpoints:
+        web:
+            exposure:
+                include: '*'
+    metrics:
+        export:
+            prometheus:
+                enabled: true
